@@ -1,0 +1,280 @@
+import mysql.connector
+import functools
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+
+
+
+
+mktCapList = []
+
+atlasDatabase = mysql.connector.connect(
+        host="database-1.c5tk1b6m5b4o.us-east-1.rds.amazonaws.com",
+        user="admin",
+        password=""
+    )
+
+mycursor = atlasDatabase.cursor()
+
+mycursor.execute("SELECT marketCap FROM atlas.alertTickers WHERE featureName = 'earnings'")
+myresultMktCap = mycursor.fetchall()
+
+for num in myresultMktCap:
+    tuple_toInt = functools.reduce(lambda sub, ele: sub * 10 + ele, num)
+    mktCapList.append(tuple_toInt)
+#print(sorted(mktCapList))
+
+
+#groups --> [1M, 50M],[50M,200M] [200M, 400M], [400M, 700M], [700M, 1B], [1B, 5B], [5B, 25B], [25B, 75B], [75B, 150B]
+#[150B, 250B], [250B, 350B], [350B, 500B]
+
+group1 = []
+group2 = []
+group3 = []
+group4 = []
+group5 = []
+group6 = []
+group7 = []
+group8 = []
+group9 = []
+group10 = []
+group11 = []
+group12 = []
+
+for cap in mktCapList:
+    if cap >= 1000000 and cap <= 50000000:
+        group1.append(cap)
+    elif cap > 50000000 and cap <= 200000000:
+        group2.append(cap)
+    elif cap > 200000000 and cap <= 400000000:
+        group3.append(cap)
+    elif cap > 400000000 and cap <= 700000000:
+        group4.append(cap)
+    elif cap > 700000000 and cap <= 1000000000:
+        group5.append(cap)
+    elif cap > 1000000000 and cap <= 5000000000:
+        group6.append(cap)
+    elif cap > 5000000000 and cap <= 25000000000:
+        group7.append(cap)
+    elif cap > 25000000000 and cap <= 75000000000:
+        group8.append(cap)
+    elif cap > 75000000000 and cap <= 150000000000:
+        group9.append(cap)
+    elif cap > 150000000000 and cap <= 250000000000:
+        group10.append(cap)
+    elif cap > 250000000000 and cap <= 350000000000:
+        group11.append(cap)
+    elif cap > 350000000000 and cap <= 500000000000:
+        group12.append(cap)
+
+
+groupsList = []
+
+groupsList.extend((group1,group2,group3,group4,group5,group6,group7,group8,group9,group10,group11,group12))
+groupsList = sorted(groupsList)
+
+#print(groupsList)
+listofEOD = []
+meanEOD = []
+counter = 0
+mean1 = []
+mean2 = []
+mean3 = []
+mean4 = []
+mean5 = []
+mean6 = []
+mean7 = []
+mean8 = []
+mean9 = []
+mean10 = []
+mean11 = []
+mean12 = []
+meanList = []
+listOfMeans = []
+for i in group1:
+    i = math.trunc(i)
+    if group1:
+        mycursor.execute(f"SELECT chgEOD FROM atlas.alertTickers WHERE featureName = 'earnings' AND marketCap LIKE '{i}'")
+        myres1 = mycursor.fetchall()
+        for x in myres1:
+            tuple_toInt = functools.reduce(lambda sub, ele: sub * 10 + ele, x)
+
+            mean1.append(tuple_toInt)
+
+meanVar = np.mean(mean1)
+meanList.append(meanVar)
+
+
+#print(mean1)
+
+for i in group2:
+    i = math.trunc(i)
+    if group2:
+        mycursor.execute(f"SELECT chgEOD FROM atlas.alertTickers WHERE featureName = 'earnings' AND marketCap LIKE '{i}'")
+        myres2 = mycursor.fetchall()
+        for x in myres2:
+            tuple_toInt = functools.reduce(lambda sub, ele: sub * 10 + ele, x)
+            mean2.append(tuple_toInt)
+meanVar = np.mean(mean2)
+meanList.append(meanVar)
+
+#print(mean2)
+
+
+for i in group3:
+    i = math.trunc(i)
+    if group3:
+
+        mycursor.execute(f"SELECT chgEOD FROM atlas.alertTickers WHERE featureName = 'earnings' AND marketCap LIKE '{i}'")
+        myres3 = mycursor.fetchall()
+        for x in myres3:
+            tuple_toInt = functools.reduce(lambda sub, ele: sub * 10 + ele, x)
+
+            mean3.append(tuple_toInt)
+
+meanVar = np.mean(mean3)
+meanList.append(meanVar)
+#print(mean3)
+for i in group4:
+    i = math.trunc(i)
+    if group4:
+        mycursor.execute(f"SELECT chgEOD FROM atlas.alertTickers WHERE featureName = 'earnings' AND marketCap LIKE '{i}'")
+        myres4 = mycursor.fetchall()
+        for x in myres4:
+            tuple_toInt = functools.reduce(lambda sub, ele: sub * 10 + ele, x)
+
+            mean4.append(tuple_toInt)
+meanVar = np.mean(mean4)
+meanList.append(meanVar)
+
+#print(mean4)
+
+for i in group5:
+    i = math.trunc(i)
+    if group5:
+        mycursor.execute(f"SELECT chgEOD FROM atlas.alertTickers WHERE featureName = 'earnings' AND marketCap LIKE '{i}'")
+        myres5 = mycursor.fetchall()
+        for x in myres5:
+            tuple_toInt = functools.reduce(lambda sub, ele: sub * 10 + ele, x)
+            mean5.append(tuple_toInt)
+if group5:
+    meanVar = np.mean(mean5)
+    meanList.append(meanVar)
+
+#print(mean5)
+
+
+for i in group6:
+    i = math.trunc(i)
+    if group6:
+        mycursor.execute(f"SELECT chgEOD FROM atlas.alertTickers WHERE featureName = 'earnings' AND marketCap LIKE '{i}'")
+        myres6 = mycursor.fetchall()
+        for x in myres6:
+            tuple_toInt = functools.reduce(lambda sub, ele: sub * 10 + ele, x)
+            mean6.append(tuple_toInt)
+meanVar = np.mean(mean6)
+meanList.append(meanVar)
+
+#print(mean6)
+
+for i in group7:
+    i = math.trunc(i)
+    if group7:
+        mycursor.execute(f"SELECT chgEOD FROM atlas.alertTickers WHERE featureName = 'earnings' AND marketCap LIKE '{i}'")
+        myres7 = mycursor.fetchall()
+        for x in myres7:
+            tuple_toInt = functools.reduce(lambda sub, ele: sub * 10 + ele, x)
+            mean7.append(tuple_toInt)
+meanVar = np.mean(mean7)
+meanList.append(meanVar)
+
+#print(mean7)
+
+for i in group8:
+    i = math.trunc(i)
+    if group8:
+        mycursor.execute(f"SELECT chgEOD FROM atlas.alertTickers WHERE featureName = 'earnings' AND marketCap LIKE '{i}'")
+        myres8 = mycursor.fetchall()
+        for x in myres8:
+            tuple_toInt = functools.reduce(lambda sub, ele: sub * 10 + ele, x)
+            mean8.append(tuple_toInt)
+if group8:
+    meanVar = np.mean(mean8)
+    meanList.append(meanVar)
+
+#print(mean8)
+
+for i in group9:
+    i = math.trunc(i)
+    if group9:
+        mycursor.execute(f"SELECT chgEOD FROM atlas.alertTickers WHERE featureName = 'earnings' AND marketCap LIKE '{i}'")
+        myres9 = mycursor.fetchall()
+        for x in myres9:
+            tuple_toInt = functools.reduce(lambda sub, ele: sub * 10 + ele, x)
+            mean9.append(tuple_toInt)
+if group9:
+    meanVar = np.mean(mean9)
+    meanList.append(meanVar)
+
+#print(mean9)
+
+for i in group10:
+    i = math.trunc(i)
+    if group10:
+        mycursor.execute(f"SELECT chgEOD FROM atlas.alertTickers WHERE featureName = 'earnings' AND marketCap LIKE '{i}'")
+        myres10 = mycursor.fetchall()
+        for x in myres10:
+            tuple_toInt = functools.reduce(lambda sub, ele: sub * 10 + ele, x)
+            mean10.append(tuple_toInt)
+meanVar = np.mean(mean10)
+meanList.append(meanVar)
+
+#print(mean10)
+
+
+for i in group11:
+    i = math.trunc(i)
+    if group11:
+        mycursor.execute(f"SELECT chgEOD FROM atlas.alertTickers WHERE featureName = 'earnings' AND marketCap LIKE '{i}'")
+        myres11 = mycursor.fetchall()
+        for x in myres11:
+            tuple_toInt = functools.reduce(lambda sub, ele: sub * 10 + ele, x)
+            mean11.append(tuple_toInt)
+if group11:
+    meanVar = np.mean(mean11)
+    meanList.append(meanVar)
+
+for i in group12:
+    i = math.trunc(i)
+    if group12:
+        mycursor.execute(f"SELECT chgEOD FROM atlas.alertTickers WHERE featureName = 'earnings' AND marketCap LIKE '{i}'")
+        myres12 = mycursor.fetchall()
+        for x in myres12:
+            tuple_toInt = functools.reduce(lambda sub, ele: sub * 10 + ele, x)
+            mean12.append(tuple_toInt)
+meanVar = np.mean(mean12)
+meanList.append(meanVar)
+
+print(len(mean1),len(mean2),len(mean3),len(mean4),len(mean5),len(mean6),len(mean7),len(mean8),len(mean9),len(mean10),len(mean12))
+
+print(meanList)
+print(sorted(mean2))
+
+heightOfBar = meanList
+barNames = ('G1', 'G2', 'G3', 'G4', 'G5','G6','G7','G8','G9','G10','G12')
+x_pos = np.arange(len(barNames))
+
+# Create bars and choose color
+plt.bar(x_pos, heightOfBar, color=(0.5, 0.1, 0.5, 0.6))
+
+# Add title and axis names
+plt.title('MktCap vs MeanEOD')
+plt.xlabel('MktCap (grouped)')
+plt.ylabel('MeanEOD (mean EOD of each group)')
+
+# Create names on the x axis
+plt.xticks(x_pos, barNames)
+
+# Show graph
+plt.show()
